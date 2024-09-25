@@ -8,16 +8,17 @@ import { fileURLToPath } from 'node:url';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
+// The project itself
+const eventCatalogDir = join(currentDir, '../../');
+
 const program = new Command();
 
 // The users dierctory
 const dir = process.cwd();
 
 // The tmp core directory
-const core = join(dir, '.eventcatalog-core');
-
-// The project itself
-const eventCatalogDir = join(currentDir, '../../');
+// const core = join(dir, '.eventcatalog-core');
+const core = eventCatalogDir;
 
 program.name('eventcatalog').description('Documentation tool for event-driven architectures');
 
@@ -48,9 +49,9 @@ const copyCore = () => {
   fs.cpSync(eventCatalogDir, core, {
     recursive: true,
     filter: (src) => {
-      // if(src.includes('node_modules')) {
-      //   return false;
-      // }
+      if (src.includes('node_modules')) {
+        return false;
+      }
       return true;
     },
   });
@@ -76,7 +77,7 @@ program
     }
 
     if (options.forceRecreate) clearCore();
-    copyCore();
+    // copyCore();
 
     // // Copy the config and styles
     copyFolder(join(dir, 'public'), join(core, 'public'));
