@@ -1,7 +1,8 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['bin/eventcatalog.ts', 'bin/eventcatalog.config.ts'],
+  tsconfig: './tsconfig.bin.json',
+  entry: ['bin/src/**/*.{j,t}s'],
   dts: true,
   outDir: 'bin/dist',
   format: ['esm', 'cjs'],

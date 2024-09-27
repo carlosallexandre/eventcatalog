@@ -89,7 +89,7 @@ const copyFiles = async ({ source, target, catalogFilesDir, pathToMarkdownFiles,
   // Check if the directory is empty. EC (astro collections) requires at least 1 item in the collection
   // insert empty one that is filtered out
   if (markdownFiles.length === 0) {
-    const defaultCollectionFilesDir = path.join(scriptsDir, 'default-files-for-collections');
+    const defaultCollectionFilesDir = path.resolve(scriptsDir, '../default-files-for-collections');
     const defaultFile = path.join(defaultCollectionFilesDir, `${type}.md`);
     const targetDir = path.join(target, type);
     if (!fs.existsSync(targetDir)) {
@@ -137,6 +137,18 @@ export const catalogToAstro = async (source, astroContentDir, catalogFilesDir) =
   if (fs.existsSync(usersPublicDirectory)) {
     // fs.mkdirSync(astroPublicDir, { recursive: true });
     fs.cpSync(usersPublicDirectory, astroPublicDir, { recursive: true });
+  }
+
+  // Copy eventcatalog.config into the astro directory
+  const ecConfig = path.join(source, 'eventcatalog.config.js');
+  if (fs.existsSync(ecConfig)) {
+    fs.cpSync(ecConfig, path.join(astroContentDir, '../../eventcatalog.config.js'));
+  }
+
+  // Copy eventcatalog.styles into the astro directory
+  const ecStyles = path.join(source, 'eventcatalog.styles.js');
+  if (fs.existsSync(ecStyles)) {
+    fs.cpSync(ecStyles, path.join(astroContentDir, '../../eventcatalog.styles.js'));
   }
 
   // Copy all the event files over
@@ -267,13 +279,3 @@ export const catalogToAstro = async (source, astroContentDir, catalogFilesDir) =
   // Verify required fields are in the catalog config file
   await verifyRequiredFieldsAreInCatalogConfigFile(source);
 };
-
-if (process.env.NODE_ENV !== 'test') {
-  // // Get the project directory of the source
-  const source = process.env.PROJECT_DIR;
-
-  const astroContentDir = path.join(process.env.CATALOG_DIR, 'src/content');
-  const catalogFilesDir = path.join(process.env.CATALOG_DIR, 'src/catalog-files');
-
-  catalogToAstro(source, astroContentDir, catalogFilesDir);
-}
