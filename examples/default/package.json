@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "eventcatalog dev",
+    "build": "eventcatalog build",
+    "generate": "eventcatalog generate",
+    "preview": "eventcatalog preview",
+    "start": "eventcatalog start"
+  }
+}
