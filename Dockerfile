@@ -1,5 +1,5 @@
 # Docker file used for CI/CD pipeline to verify builds with their dependencies
-FROM node:20.17 AS builder
+FROM node:22.11 AS builder
 WORKDIR /usr/eventcatalog/
 COPY package*.json .
 RUN npm ci
@@ -8,7 +8,7 @@ RUN npm run build:bin
 RUN npm pack
 
 
-FROM node:20.17 AS runner
+FROM node:22.11 AS runner
 WORKDIR /usr/example/
 COPY examples/default/ .
 COPY --from=builder /usr/eventcatalog/*.tgz /usr/eventcatalog/
